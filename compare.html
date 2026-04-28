@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare — DSA Sorting Visualizer</title>
+  <meta name="description" content="Race two sorting algorithms side-by-side on the same dataset. Compare performance metrics in real time.">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/compare.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <span>Sort<span class="text-gradient">Viz</span></span>
+    </a>
+    <nav>
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="visualizer.html" class="nav-link">Visualizer</a>
+      <a href="compare.html" class="nav-link active">Compare</a>
+    </nav>
+  </div>
+
+  <div class="compare-page">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="compare-header">
+        <h1>Algorithm <span class="text-gradient">Comparison</span></h1>
+        <p>Race two sorting algorithms side-by-side on the same dataset</p>
+      </div>
+
+      <!-- Setup Controls -->
+      <div class="compare-setup">
+        <div class="select-wrap">
+          <select id="algo-select-a">
+            <option value="bubble">Bubble Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="insertion">Insertion Sort</option>
+            <option value="merge" selected>Merge Sort</option>
+            <option value="quick">Quick Sort</option>
+            <option value="heap">Heap Sort</option>
+            <option value="shell">Shell Sort</option>
+            <option value="counting">Counting Sort</option>
+          </select>
+        </div>
+        <span class="vs-label">VS</span>
+        <div class="select-wrap">
+          <select id="algo-select-b">
+            <option value="bubble" selected>Bubble Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="insertion">Insertion Sort</option>
+            <option value="merge">Merge Sort</option>
+            <option value="quick">Quick Sort</option>
+            <option value="heap">Heap Sort</option>
+            <option value="shell">Shell Sort</option>
+            <option value="counting">Counting Sort</option>
+          </select>
+        </div>
+        <div class="divider"></div>
+        <div class="range-control">
+          <span class="range-label">Speed</span>
+          <input type="range" id="compare-speed" min="1" max="5" value="4" step="1">
+          <span class="range-value" id="compare-speed-val">4</span>
+        </div>
+        <div class="range-control">
+          <span class="range-label">Size</span>
+          <input type="range" id="compare-size" min="10" max="60" value="30" step="5">
+          <span class="range-value" id="compare-size-val">30</span>
+        </div>
+        <div class="divider"></div>
+        <button class="btn" id="compare-new-array">🔄 New Array</button>
+        <button class="btn btn-primary" id="compare-start">▶ Race!</button>
+        <button class="btn btn-danger" id="compare-stop">⏹ Stop</button>
+      </div>
+
+      <!-- Dual Canvas Grid -->
+      <div class="compare-grid">
+        <!-- Panel A -->
+        <div class="compare-panel panel-a">
+          <div class="compare-panel-header">
+            <div class="compare-panel-title">
+              <span class="panel-num">A</span>
+              <span>Algorithm A</span>
+            </div>
+          </div>
+          <div class="compare-canvas-wrap">
+            <canvas id="canvas-a"></canvas>
+          </div>
+          <div class="compare-stats">
+            <div class="compare-stat">
+              <div class="label">Comparisons</div>
+              <div class="value" id="comp-a-comparisons">0</div>
+            </div>
+            <div class="compare-stat">
+              <div class="label">Swaps</div>
+              <div class="value" id="comp-a-swaps">0</div>
+            </div>
+            <div class="compare-stat">
+              <div class="label">Time</div>
+              <div class="value" id="comp-a-time">0.00s</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel B -->
+        <div class="compare-panel panel-b">
+          <div class="compare-panel-header">
+            <div class="compare-panel-title">
+              <span class="panel-num">B</span>
+              <span>Algorithm B</span>
+            </div>
+          </div>
+          <div class="compare-canvas-wrap">
+            <canvas id="canvas-b"></canvas>
+          </div>
+          <div class="compare-stats">
+            <div class="compare-stat">
+              <div class="label">Comparisons</div>
+              <div class="value" id="comp-b-comparisons">0</div>
+            </div>
+            <div class="compare-stat">
+              <div class="label">Swaps</div>
+              <div class="value" id="comp-b-swaps">0</div>
+            </div>
+            <div class="compare-stat">
+              <div class="label">Time</div>
+              <div class="value" id="comp-b-time">0.00s</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Banner -->
+      <div class="compare-result" id="compare-result">
+        <h2>🏆 <span id="winner-name">Winner!</span></h2>
+        <p class="result-details" id="result-details"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/algorithms/bubble.js"></script>
+  <script src="js/algorithms/selection.js"></script>
+  <script src="js/algorithms/insertion.js"></script>
+  <script src="js/algorithms/merge.js"></script>
+  <script src="js/algorithms/quick.js"></script>
+  <script src="js/algorithms/heap.js"></script>
+  <script src="js/algorithms/shell.js"></script>
+  <script src="js/algorithms/counting.js"></script>
+  <script src="js/visualizer.js"></script>
+  <script src="js/compare.js"></script>
+  <script>
+    // Register algorithms so Compare can look them up
+    Visualizer.registerAlgorithm(BubbleSort);
+    Visualizer.registerAlgorithm(SelectionSort);
+    Visualizer.registerAlgorithm(InsertionSort);
+    Visualizer.registerAlgorithm(MergeSort);
+    Visualizer.registerAlgorithm(QuickSort);
+    Visualizer.registerAlgorithm(HeapSort);
+    Visualizer.registerAlgorithm(ShellSort);
+    Visualizer.registerAlgorithm(CountingSort);
+    // Init compare page
+    Compare.init();
+  </script>
+
+</body>
+</html>

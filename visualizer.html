@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizer — DSA Sorting Visualizer</title>
+  <meta name="description" content="Interactive sorting algorithm visualizer with 8 algorithms, audio feedback, step-by-step mode, and real-time statistics.">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/visualizer.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <span>Sort<span class="text-gradient">Viz</span></span>
+    </a>
+    <nav>
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="visualizer.html" class="nav-link active">Visualizer</a>
+      <a href="compare.html" class="nav-link">Compare</a>
+    </nav>
+  </div>
+
+  <div class="viz-page">
+    <div class="container">
+
+      <!-- Algorithm Selection -->
+      <div class="controls-section">
+        <div class="controls-left">
+          <div class="btn-group">
+            <button class="btn algo-btn active" data-algo="bubble">Bubble</button>
+            <button class="btn algo-btn" data-algo="selection">Selection</button>
+            <button class="btn algo-btn" data-algo="insertion">Insertion</button>
+            <button class="btn algo-btn" data-algo="merge">Merge</button>
+            <button class="btn algo-btn" data-algo="quick">Quick</button>
+            <button class="btn algo-btn" data-algo="heap">Heap</button>
+            <button class="btn algo-btn" data-algo="shell">Shell</button>
+            <button class="btn algo-btn" data-algo="counting">Counting</button>
+          </div>
+        </div>
+        <div class="controls-right">
+          <label class="toggle-wrap">
+            <div class="toggle">
+              <input type="checkbox" id="audio-toggle">
+              <span class="toggle-slider"></span>
+            </div>
+            <span id="audio-label">Sound Off</span>
+          </label>
+          <div class="divider"></div>
+          <label class="toggle-wrap">
+            <div class="toggle">
+              <input type="checkbox" id="step-toggle">
+              <span class="toggle-slider"></span>
+            </div>
+            <span>Step Mode</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Speed, Size, Array Mode, Actions -->
+      <div class="controls-section">
+        <div class="controls-left">
+          <div class="range-control">
+            <span class="range-label">Speed</span>
+            <input type="range" id="speed" min="1" max="5" value="3" step="1">
+            <span class="range-value" id="speed-val">3</span>
+          </div>
+          <div class="range-control">
+            <span class="range-label">Size</span>
+            <input type="range" id="size" min="10" max="80" value="40" step="5">
+            <span class="range-value" id="size-val">40</span>
+          </div>
+          <div class="divider"></div>
+          <div class="array-mode-btns">
+            <button class="btn array-mode-btn active" data-mode="random">Random</button>
+            <button class="btn array-mode-btn" data-mode="nearly">Nearly Sorted</button>
+            <button class="btn array-mode-btn" data-mode="reversed">Reversed</button>
+            <button class="btn array-mode-btn" data-mode="few-unique">Few Unique</button>
+            <button class="btn array-mode-btn" data-mode="custom">Custom</button>
+          </div>
+        </div>
+        <div class="controls-right">
+          <button class="btn" id="btn-new-array">🔄 New Array</button>
+          <button class="btn btn-primary" id="btn-sort">▶ Sort</button>
+          <button class="btn btn-danger" id="btn-stop">⏹ Stop</button>
+          <button class="btn" id="btn-step" style="display:none;">⏭ Step</button>
+        </div>
+      </div>
+
+      <!-- Custom array input (hidden by default) -->
+      <div class="controls-section" id="custom-input-wrap" style="display:none;">
+        <div class="custom-array-input">
+          <input type="text" id="custom-array-input" class="text-input" placeholder="e.g. 45, 23, 78, 12, 56, 90, 34">
+          <button class="btn btn-primary" id="btn-apply-custom">Apply</button>
+        </div>
+      </div>
+
+      <!-- Main Layout: Canvas + Sidebar -->
+      <div class="viz-layout">
+
+        <!-- Left: Canvas + Stats -->
+        <div>
+          <!-- Stats Row -->
+          <div class="stats-grid" style="margin-bottom: var(--space-md);">
+            <div class="stat-box">
+              <div class="stat-label">Comparisons</div>
+              <div class="stat-value" id="comparisons">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Swaps</div>
+              <div class="stat-value" id="swaps">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Time</div>
+              <div class="stat-value highlight" id="timer">0.00s</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Time Complexity</div>
+              <div class="stat-value" id="stat-time-complexity" style="font-size:0.95rem;">O(n²)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Space</div>
+              <div class="stat-value" id="stat-space-complexity" style="font-size:0.95rem;">O(1)</div>
+            </div>
+          </div>
+
+          <!-- Canvas -->
+          <div class="canvas-card">
+            <div class="canvas-header">
+              <span class="canvas-title" id="algo-title">Bubble Sort</span>
+              <div id="algo-properties" class="properties"></div>
+            </div>
+            <div id="canvas-wrap">
+              <canvas id="canvas"></canvas>
+            </div>
+            <div class="legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--bar-default)"></div> Unsorted</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--bar-comparing)"></div> Comparing</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--bar-swapping)"></div> Swapping</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--bar-sorted)"></div> Sorted</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--bar-pivot)"></div> Pivot</div>
+            </div>
+          </div>
+
+          <!-- Status Bar -->
+          <div class="status-bar" style="margin-top: var(--space-md);">
+            <div class="status-dot idle" id="status-dot"></div>
+            <span id="status-text">Press "New Array" then "Sort" to begin.</span>
+          </div>
+        </div>
+
+        <!-- Right: Info Panel -->
+        <div class="info-panel">
+          <!-- Description -->
+          <div class="info-card">
+            <div class="info-card-title"><span class="icon">📖</span> Description</div>
+            <p class="algo-description" id="algo-description">
+              Bubble Sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.
+            </p>
+          </div>
+
+          <!-- Complexity -->
+          <div class="info-card">
+            <div class="info-card-title"><span class="icon">📊</span> Complexity Analysis</div>
+            <table class="complexity-table">
+              <tbody id="complexity-body">
+                <tr><td>Best Case</td><td>O(n)</td></tr>
+                <tr><td>Average Case</td><td>O(n²)</td></tr>
+                <tr><td>Worst Case</td><td>O(n²)</td></tr>
+                <tr><td>Space</td><td>O(1)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pseudocode -->
+          <div class="info-card">
+            <div class="info-card-title"><span class="icon">💻</span> Pseudocode</div>
+            <div class="pseudocode" id="pseudocode">for i = 0 to n-1
+  for j = 0 to n-i-2
+    if arr[j] > arr[j+1]
+      swap(arr[j], arr[j+1])</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/algorithms/bubble.js"></script>
+  <script src="js/algorithms/selection.js"></script>
+  <script src="js/algorithms/insertion.js"></script>
+  <script src="js/algorithms/merge.js"></script>
+  <script src="js/algorithms/quick.js"></script>
+  <script src="js/algorithms/heap.js"></script>
+  <script src="js/algorithms/shell.js"></script>
+  <script src="js/algorithms/counting.js"></script>
+  <script src="js/visualizer.js"></script>
+  <script src="js/controls.js"></script>
+  <script>
+    // Register all algorithms
+    Visualizer.registerAlgorithm(BubbleSort);
+    Visualizer.registerAlgorithm(SelectionSort);
+    Visualizer.registerAlgorithm(InsertionSort);
+    Visualizer.registerAlgorithm(MergeSort);
+    Visualizer.registerAlgorithm(QuickSort);
+    Visualizer.registerAlgorithm(HeapSort);
+    Visualizer.registerAlgorithm(ShellSort);
+    Visualizer.registerAlgorithm(CountingSort);
+    // Init controls
+    Controls.init();
+  </script>
+
+</body>
+</html>

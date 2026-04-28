@@ -1,0 +1,309 @@
+/* ============================================
+   DSA Sorting Visualizer — Visualizer Page
+   Canvas, bars, layout, info panel
+   ============================================ */
+
+/* --- Page Layout --- */
+.viz-page {
+  padding: var(--space-lg) 0 var(--space-3xl);
+  animation: fadeIn 0.5s ease;
+}
+
+.viz-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+/* --- Controls Row --- */
+.controls-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.controls-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+}
+
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border-default);
+}
+
+/* --- Canvas Area --- */
+.canvas-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  transition: border-color var(--transition-normal);
+}
+
+.canvas-card.sorting {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 24px var(--accent-primary-glow);
+}
+
+.canvas-card.done {
+  border-color: var(--accent-success);
+  box-shadow: 0 0 24px rgba(0, 230, 118, 0.2);
+}
+
+.canvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.canvas-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+#canvas-wrap {
+  width: 100%;
+  height: 300px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-subtle);
+}
+
+canvas {
+  display: block;
+}
+
+/* --- Legend --- */
+.legend {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* --- Info Panel (sidebar) --- */
+.info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.info-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--transition-normal);
+}
+
+.info-card-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.info-card-title .icon {
+  font-size: 1rem;
+}
+
+/* Algorithm description */
+.algo-description {
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+/* Complexity table */
+.complexity-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.complexity-table tr {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.complexity-table tr:last-child {
+  border-bottom: none;
+}
+
+.complexity-table td {
+  padding: 6px 0;
+  font-size: 0.8125rem;
+}
+
+.complexity-table td:first-child {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.complexity-table td:last-child {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-secondary);
+  font-weight: 500;
+}
+
+/* Pseudocode */
+.pseudocode {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.pseudocode .keyword {
+  color: var(--accent-primary);
+}
+
+.pseudocode .comment {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Properties badges */
+.properties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* --- Array Input Section --- */
+.array-input-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.array-mode-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.array-mode-btns .btn {
+  font-size: 0.75rem;
+  padding: 5px 12px;
+}
+
+.custom-array-input {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.custom-array-input .text-input {
+  flex: 1;
+}
+
+/* --- Timer --- */
+.timer-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-warning);
+}
+
+/* --- Step Controls --- */
+.step-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .viz-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .info-panel {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .info-card {
+    flex: 1;
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  #canvas-wrap {
+    height: 220px;
+  }
+
+  .controls-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls-left, .controls-right {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  #canvas-wrap {
+    height: 180px;
+  }
+
+  .info-panel {
+    flex-direction: column;
+  }
+
+  .info-card {
+    min-width: 0;
+  }
+}

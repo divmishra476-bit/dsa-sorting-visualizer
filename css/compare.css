@@ -1,0 +1,188 @@
+/* ============================================
+   DSA Sorting Visualizer — Compare Page
+   Side-by-side dual-canvas layout
+   ============================================ */
+
+.compare-page {
+  padding: var(--space-lg) 0 var(--space-3xl);
+  animation: fadeIn 0.5s ease;
+}
+
+.compare-header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.compare-header h1 {
+  margin-bottom: var(--space-xs);
+}
+
+.compare-header p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* --- Setup Row --- */
+.compare-setup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.compare-setup .vs-label {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* --- Dual Canvas Grid --- */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.compare-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--transition-normal);
+}
+
+.compare-panel.winner {
+  border-color: var(--accent-success);
+  box-shadow: 0 0 24px rgba(0, 230, 118, 0.2);
+}
+
+.compare-panel.loser {
+  border-color: var(--border-subtle);
+  opacity: 0.75;
+}
+
+.compare-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.compare-panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.compare-panel-title .panel-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.panel-a .panel-num {
+  background: rgba(124, 92, 252, 0.2);
+  color: var(--accent-primary);
+}
+
+.panel-b .panel-num {
+  background: rgba(0, 229, 255, 0.2);
+  color: var(--accent-secondary);
+}
+
+.compare-canvas-wrap {
+  width: 100%;
+  height: 220px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: var(--space-md);
+}
+
+.compare-canvas-wrap canvas {
+  display: block;
+}
+
+/* --- Compare Stats --- */
+.compare-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+
+.compare-stat {
+  text-align: center;
+  padding: var(--space-sm);
+  background: var(--bg-glass);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.compare-stat .label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.compare-stat .value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+}
+
+/* --- Result Banner --- */
+.compare-result {
+  text-align: center;
+  padding: var(--space-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-lg);
+  display: none;
+}
+
+.compare-result.visible {
+  display: block;
+  animation: slideUp 0.4s ease;
+}
+
+.compare-result h2 {
+  margin-bottom: var(--space-sm);
+}
+
+.compare-result .winner-name {
+  color: var(--accent-success);
+  font-weight: 800;
+}
+
+.compare-result .result-details {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-canvas-wrap {
+    height: 180px;
+  }
+}

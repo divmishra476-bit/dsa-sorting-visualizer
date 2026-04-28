@@ -1,473 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sorting Visualizer</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f5f5f5;
-      color: #222;
-      min-height: 100vh;
-      padding: 24px 16px;
-    }
-
-    header {
-      max-width: 800px;
-      margin: 0 auto 24px;
-    }
-
-    header h1 {
-      font-size: 22px;
-      font-weight: 600;
-      color: #111;
-    }
-
-    header p {
-      font-size: 13px;
-      color: #777;
-      margin-top: 4px;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 20px;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
-      align-items: center;
-    }
-
-    .algo-btns {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    button {
-      padding: 6px 14px;
-      font-size: 13px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: #fff;
-      cursor: pointer;
-      color: #333;
-      transition: background 0.15s;
-    }
-
-    button:hover { background: #f0f0f0; }
-
-    button.active {
-      background: #e8f0fe;
-      border-color: #4a90d9;
-      color: #1a5fb4;
-      font-weight: 500;
-    }
-
-    button.primary {
-      background: #4a90d9;
-      color: #fff;
-      border-color: #4a90d9;
-    }
-
-    button.primary:hover { background: #3a7bc8; }
-
-    .range-group {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      color: #555;
-    }
-
-    input[type=range] { width: 80px; cursor: pointer; }
-
-    .stats {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-
-    .stat-box {
-      flex: 1;
-      min-width: 100px;
-      background: #f9f9f9;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      text-align: center;
-    }
-
-    .stat-box .label {
-      font-size: 11px;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-    }
-
-    .stat-box .value {
-      font-size: 20px;
-      font-weight: 600;
-      color: #222;
-    }
-
-    #canvas-wrap {
-      width: 100%;
-      height: 240px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #fafafa;
-    }
-
-    canvas { display: block; }
-
-    .legend {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-      font-size: 12px;
-      color: #555;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .legend-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 2px;
-    }
-
-    #status {
-      margin-top: 12px;
-      font-size: 13px;
-      color: #777;
-      min-height: 18px;
-    }
-
-    .action-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSA Sorting Visualizer — by Divyam</title>
+  <meta name="description" content="An interactive sorting algorithm visualizer. Compare Bubble, Selection, Insertion, Merge, Quick, Heap, Shell, and Counting Sort with real-time animations, audio feedback, and side-by-side comparisons.">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/landing.css">
 </head>
 <body>
 
-<header>
-  <h1>Sorting Visualizer</h1>
-  <p>by Divyam &nbsp;·&nbsp; A visual comparison of common sorting algorithms</p>
-</header>
-
-<div class="container">
-
-  <!-- Algorithm selection -->
-  <div class="controls">
-    <div class="algo-btns">
-      <button id="btn-bubble" onclick="selectAlgo('bubble')" class="active">Bubble Sort</button>
-      <button id="btn-selection" onclick="selectAlgo('selection')">Selection Sort</button>
-      <button id="btn-insertion" onclick="selectAlgo('insertion')">Insertion Sort</button>
-      <button id="btn-merge" onclick="selectAlgo('merge')">Merge Sort</button>
-    </div>
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <span>Sort<span class="text-gradient">Viz</span></span>
+    </a>
+    <nav>
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="visualizer.html" class="nav-link">Visualizer</a>
+      <a href="compare.html" class="nav-link">Compare</a>
+    </nav>
   </div>
 
-  <!-- Speed + Size sliders -->
-  <div class="controls">
-    <div class="range-group">
-      <label>Speed</label>
-      <input type="range" id="speed" min="1" max="5" value="3" step="1">
-      <span id="speed-val">3</span>
-    </div>
-    <div class="range-group">
-      <label>Array size</label>
-      <input type="range" id="size" min="10" max="60" value="30" step="5">
-      <span id="size-val">30</span>
-    </div>
+  <div class="landing-page">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-badge">🎓 Final Year Project — Data Structures & Algorithms</div>
+      <h1>Sorting Algorithm<br><span class="text-gradient">Visualizer</span></h1>
+      <p class="hero-subtitle">
+        Watch sorting algorithms come to life with real-time animations, audio feedback, step-by-step control, and side-by-side comparisons. Built to make DSA intuitive and engaging.
+      </p>
+      <div class="hero-actions">
+        <a href="visualizer.html" class="btn btn-primary">▶ Launch Visualizer</a>
+        <a href="compare.html" class="btn">⚔ Compare Algorithms</a>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Project <span class="text-gradient">Features</span></h2>
+          <p>Everything you need to understand and compare sorting algorithms</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>8 Sorting Algorithms</h3>
+            <p>Bubble, Selection, Insertion, Merge, Quick, Heap, Shell, and Counting Sort — each with full visualization.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Real-Time Animation</h3>
+            <p>Canvas-based visualization with color-coded bars for comparing, swapping, and sorted elements.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚔️</div>
+            <h3>Side-by-Side Comparison</h3>
+            <p>Race two algorithms against each other on the same dataset and compare performance metrics.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔊</div>
+            <h3>Audio Feedback</h3>
+            <p>Hear the sort — frequency-mapped tones using Web Audio API bring the visualization to life.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔬</div>
+            <h3>Step-by-Step Mode</h3>
+            <p>Advance one comparison at a time to deeply understand each algorithm's decision process.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📖</div>
+            <h3>Algorithm Details</h3>
+            <p>View pseudocode, complexity analysis, stability, and detailed descriptions for every algorithm.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Algorithms Showcase -->
+    <section class="algo-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Supported <span class="text-gradient">Algorithms</span></h2>
+          <p>From simple O(n²) to efficient O(n log n) and linear-time sorts</p>
+        </div>
+        <div class="algo-grid">
+          <div class="algo-card">
+            <h4>Bubble Sort</h4>
+            <div class="complexity">O(n²)</div>
+            <div class="algo-type">Comparison • Stable</div>
+          </div>
+          <div class="algo-card">
+            <h4>Selection Sort</h4>
+            <div class="complexity">O(n²)</div>
+            <div class="algo-type">Comparison • Unstable</div>
+          </div>
+          <div class="algo-card">
+            <h4>Insertion Sort</h4>
+            <div class="complexity">O(n²)</div>
+            <div class="algo-type">Comparison • Stable</div>
+          </div>
+          <div class="algo-card">
+            <h4>Merge Sort</h4>
+            <div class="complexity">O(n log n)</div>
+            <div class="algo-type">Divide & Conquer • Stable</div>
+          </div>
+          <div class="algo-card">
+            <h4>Quick Sort</h4>
+            <div class="complexity">O(n log n)</div>
+            <div class="algo-type">Divide & Conquer • Unstable</div>
+          </div>
+          <div class="algo-card">
+            <h4>Heap Sort</h4>
+            <div class="complexity">O(n log n)</div>
+            <div class="algo-type">Comparison • Unstable</div>
+          </div>
+          <div class="algo-card">
+            <h4>Shell Sort</h4>
+            <div class="complexity">O(n log² n)</div>
+            <div class="algo-type">Comparison • Unstable</div>
+          </div>
+          <div class="algo-card">
+            <h4>Counting Sort</h4>
+            <div class="complexity">O(n + k)</div>
+            <div class="algo-type">Non-Comparison • Stable</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>Made with <span class="heart">♥</span> by Divyam — Final Year Project 2026</p>
+      </div>
+    </footer>
+
   </div>
-
-  <!-- Action buttons -->
-  <div class="action-row">
-    <button onclick="generateArray()">New Array</button>
-    <button class="primary" onclick="startSort()">Sort</button>
-    <button onclick="stopSort()">Stop</button>
-  </div>
-
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat-box">
-      <div class="label">Comparisons</div>
-      <div class="value" id="comparisons">0</div>
-    </div>
-    <div class="stat-box">
-      <div class="label">Swaps</div>
-      <div class="value" id="swaps">0</div>
-    </div>
-    <div class="stat-box">
-      <div class="label">Time Complexity</div>
-      <div class="value" id="complexity" style="font-size:15px; padding-top:4px;">O(n²)</div>
-    </div>
-    <div class="stat-box">
-      <div class="label">Space Complexity</div>
-      <div class="value" id="space" style="font-size:15px; padding-top:4px;">O(1)</div>
-    </div>
-  </div>
-
-  <!-- Canvas -->
-  <div id="canvas-wrap">
-    <canvas id="canvas"></canvas>
-  </div>
-
-  <!-- Legend -->
-  <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#4a90d9"></div> Unsorted</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#f5a623"></div> Comparing</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Swapping</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div> Sorted</div>
-  </div>
-
-  <div id="status">Press "New Array" then "Sort" to begin.</div>
-
-</div>
-
-<script>
-  let arr = [], highlights = {}, running = false, stopped = false;
-  let comparisons = 0, swaps = 0;
-  let currentAlgo = 'bubble';
-
-  const complexityMap = {
-    bubble:    { time: 'O(n²)',      space: 'O(1)' },
-    selection: { time: 'O(n²)',      space: 'O(1)' },
-    insertion: { time: 'O(n²)',      space: 'O(1)' },
-    merge:     { time: 'O(n log n)', space: 'O(n)' }
-  };
-
-  const speedMap = { 1: 200, 2: 80, 3: 30, 4: 8, 5: 1 };
-
-  function getDelay() { return speedMap[+document.getElementById('speed').value] || 30; }
-  function getSize()  { return +document.getElementById('size').value || 30; }
-
-  document.getElementById('speed').addEventListener('input', function() {
-    document.getElementById('speed-val').textContent = this.value;
-  });
-  document.getElementById('size').addEventListener('input', function() {
-    document.getElementById('size-val').textContent = this.value;
-  });
-
-  function generateArray() {
-    stopSort();
-    const n = getSize();
-    arr = Array.from({ length: n }, () => Math.floor(Math.random() * 85) + 10);
-    highlights = {};
-    comparisons = 0; swaps = 0;
-    updateStats();
-    draw();
-    document.getElementById('status').textContent = 'Array generated. Press Sort to begin.';
-  }
-
-  function selectAlgo(algo) {
-    currentAlgo = algo;
-    ['bubble','selection','insertion','merge'].forEach(a => {
-      document.getElementById('btn-' + a).className = (a === algo) ? 'active' : '';
-    });
-    document.getElementById('complexity').textContent = complexityMap[algo].time;
-    document.getElementById('space').textContent      = complexityMap[algo].space;
-    document.getElementById('status').textContent = algo.charAt(0).toUpperCase() + algo.slice(1) + ' Sort selected.';
-  }
-
-  function updateStats() {
-    document.getElementById('comparisons').textContent = comparisons;
-    document.getElementById('swaps').textContent = swaps;
-  }
-
-  function draw() {
-    const canvas = document.getElementById('canvas');
-    const wrap   = document.getElementById('canvas-wrap');
-    canvas.width  = wrap.offsetWidth;
-    canvas.height = wrap.offsetHeight;
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
-    ctx.clearRect(0, 0, W, H);
-    const n = arr.length;
-    const gap = 2;
-    const barW = Math.max(2, (W - gap * n) / n);
-
-    for (let i = 0; i < n; i++) {
-      const x = i * (barW + gap);
-      const h = Math.floor((arr[i] / 100) * (H - 10));
-      let color = '#4a90d9';
-      if (highlights.sorted   && highlights.sorted.includes(i))    color = '#27ae60';
-      if (highlights.comparing && highlights.comparing.includes(i)) color = '#f5a623';
-      if (highlights.swapping  && highlights.swapping.includes(i))  color = '#e74c3c';
-      ctx.fillStyle = color;
-      ctx.fillRect(x, H - h - 5, barW, h);
-    }
-  }
-
-  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-  async function startSort() {
-    if (running) return;
-    if (!arr.length) generateArray();
-    running = true; stopped = false;
-    comparisons = 0; swaps = 0;
-    highlights = {};
-    document.getElementById('status').textContent = 'Sorting...';
-
-    const a = [...arr];
-    if      (currentAlgo === 'bubble')    await bubbleSort(a);
-    else if (currentAlgo === 'selection') await selectionSort(a);
-    else if (currentAlgo === 'insertion') await insertionSort(a);
-    else if (currentAlgo === 'merge')     await mergeSortWrapper(a);
-
-    if (!stopped) {
-      highlights = { sorted: Array.from({ length: arr.length }, (_, i) => i) };
-      draw();
-      document.getElementById('status').textContent = 'Done! Comparisons: ' + comparisons + ', Swaps: ' + swaps;
-    }
-    running = false;
-  }
-
-  function stopSort() {
-    stopped = true; running = false;
-    highlights = {};
-    if (arr.length) draw();
-    document.getElementById('status').textContent = 'Stopped.';
-  }
-
-  // --- Bubble Sort ---
-  async function bubbleSort(a) {
-    arr = a;
-    const n = arr.length;
-    const sorted = [];
-    for (let i = 0; i < n - 1; i++) {
-      for (let j = 0; j < n - i - 1; j++) {
-        if (stopped) return;
-        comparisons++;
-        highlights = { comparing: [j, j + 1], sorted };
-        updateStats(); draw();
-        await sleep(getDelay());
-        if (arr[j] > arr[j + 1]) {
-          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-          swaps++;
-          highlights = { swapping: [j, j + 1], sorted };
-          updateStats(); draw();
-          await sleep(getDelay());
-        }
-      }
-      sorted.push(n - 1 - i);
-    }
-    sorted.push(0);
-  }
-
-  // --- Selection Sort ---
-  async function selectionSort(a) {
-    arr = a;
-    const n = arr.length;
-    const sorted = [];
-    for (let i = 0; i < n - 1; i++) {
-      let minIdx = i;
-      for (let j = i + 1; j < n; j++) {
-        if (stopped) return;
-        comparisons++;
-        highlights = { comparing: [minIdx, j], sorted };
-        updateStats(); draw();
-        await sleep(getDelay());
-        if (arr[j] < arr[minIdx]) minIdx = j;
-      }
-      if (minIdx !== i) {
-        [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
-        swaps++;
-        highlights = { swapping: [i, minIdx], sorted };
-        updateStats(); draw();
-        await sleep(getDelay());
-      }
-      sorted.push(i);
-    }
-    sorted.push(n - 1);
-  }
-
-  // --- Insertion Sort ---
-  async function insertionSort(a) {
-    arr = a;
-    const n = arr.length;
-    for (let i = 1; i < n; i++) {
-      let key = arr[i], j = i - 1;
-      while (j >= 0 && arr[j] > key) {
-        if (stopped) return;
-        comparisons++;
-        arr[j + 1] = arr[j];
-        swaps++;
-        highlights = { swapping: [j, j + 1] };
-        updateStats(); draw();
-        await sleep(getDelay());
-        j--;
-      }
-      arr[j + 1] = key;
-      highlights = { comparing: [j + 1] };
-      draw();
-      await sleep(getDelay());
-    }
-  }
-
-  // --- Merge Sort ---
-  async function mergeSortWrapper(a) {
-    arr = a;
-    await mergeSort(arr, 0, arr.length - 1);
-  }
-
-  async function mergeSort(a, l, r) {
-    if (stopped || l >= r) return;
-    const m = Math.floor((l + r) / 2);
-    await mergeSort(a, l, m);
-    await mergeSort(a, m + 1, r);
-    await merge(a, l, m, r);
-  }
-
-  async function merge(a, l, m, r) {
-    const left = a.slice(l, m + 1);
-    const right = a.slice(m + 1, r + 1);
-    let i = 0, j = 0, k = l;
-    while (i < left.length && j < right.length) {
-      if (stopped) return;
-      comparisons++;
-      highlights = { comparing: [k] };
-      updateStats(); draw();
-      await sleep(getDelay());
-      if (left[i] <= right[j]) { a[k++] = left[i++]; }
-      else { a[k++] = right[j++]; swaps++; }
-    }
-    while (i < left.length) a[k++] = left[i++];
-    while (j < right.length) a[k++] = right[j++];
-    arr = a;
-    highlights = { sorted: Array.from({ length: r - l + 1 }, (_, x) => l + x) };
-    draw();
-    await sleep(getDelay());
-  }
-
-  // Init
-  selectAlgo('bubble');
-  generateArray();
-  window.addEventListener('resize', draw);
-</script>
 
 </body>
 </html>
